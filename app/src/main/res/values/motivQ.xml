@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="quotes">
+        <item>you are the best!</item>
+        <item>Keep it up</item>
+        <item>Never say never</item>
+        <item>If you hold up long enough, everything will be good</item>
+    </string-array>
+</resources>

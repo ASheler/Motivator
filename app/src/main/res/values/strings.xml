@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Motivator</string>
+    <string name="random"><i>Will fire every 3 - 5 hours</i></string>
+</resources>
