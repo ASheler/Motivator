@@ -12,10 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import java.util.Calendar;
 import java.util.Random;
 
-/**
- * Created by ondra on 2/18/2016.
- */
-public class ShowNotif extends BroadcastReceiver {
+public class ShowNotifPicture extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -24,8 +21,7 @@ public class ShowNotif extends BroadcastReceiver {
 
 
         //Intent to send user to MainActivity
-        Intent resultIntent = new Intent(context, NotificationReceivedActivity.class);
-        resultIntent.putExtra(EXTRAq, quote);
+        Intent resultIntent = new Intent(context, RSSparser.class);
         resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Notification.FLAG_AUTO_CANCEL);
 
 
@@ -40,12 +36,11 @@ public class ShowNotif extends BroadcastReceiver {
         //Build nofification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         mBuilder
-                .setSmallIcon(R.drawable.ic_stat_notif)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Motivator")
-                .setContentText("You received a new quote")
+                .setContentText("You received a motivational picture!")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_HIGH)
-                .setStyle(new NotificationCompat.BigTextStyle(mBuilder).bigText(quote).setBigContentTitle("Motivator").setSummaryText("Get motivated!"))
         ;
         mBuilder.setAutoCancel(true);
         mBuilder.setContentIntent(resultPendingIntent);
@@ -69,7 +64,7 @@ public class ShowNotif extends BroadcastReceiver {
             sendRandom = true;
             PendingIntent pendingIntent = null;
             //set up alarm and waiting intent
-            Intent alarmIntent = new Intent(context.getApplicationContext(), ShowNotif.class);
+            Intent alarmIntent = new Intent(context.getApplicationContext(), ShowNotifPicture.class);
             alarmIntent.putExtra("RND", sendRandom);
             pendingIntent = pendingIntent.getBroadcast(context.getApplicationContext(), 1, alarmIntent, 0);
 
@@ -78,11 +73,7 @@ public class ShowNotif extends BroadcastReceiver {
             AlarmManager manager;
             manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             manager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + rndr, pendingIntent);
-
-
         }
-
-
     }
 
 

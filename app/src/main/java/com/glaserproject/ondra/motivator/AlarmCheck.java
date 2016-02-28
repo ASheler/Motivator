@@ -11,7 +11,8 @@ public class AlarmCheck extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         AlarmManager manager;
-
+        Settings settings;
+        settings = new Settings();
         AlarmManager.AlarmClockInfo info =
                 ((AlarmManager)context.getSystemService(Context.ALARM_SERVICE)).getNextAlarmClock();
         if (info != null) {
@@ -22,7 +23,7 @@ public class AlarmCheck extends BroadcastReceiver {
             pendingIntent = pendingIntent.getBroadcast(context.getApplicationContext(), 0, alarmIntent, 0);
 
             manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-            manager.set(AlarmManager.RTC_WAKEUP, alarmTime+15000, pendingIntent); //15 secs after alarm
+            manager.set(AlarmManager.RTC_WAKEUP, alarmTime+settings.afterAlarmTime, pendingIntent); //15 secs after alarm
         }
     }
 }

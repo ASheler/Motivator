@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 
 /**
@@ -72,6 +73,7 @@ public final class ClickButton extends MainActivity {
         View cardView = view.findViewById(R.id.cardAlarm);
         FrameLayout layoutOld = (FrameLayout) view.findViewById(R.id.cardAlarmLayoutDefault);
         LinearLayout layoutNew = (LinearLayout) view.findViewById(R.id.cardAlarmLayoutSettings);
+        RelativeLayout settingsButton = (RelativeLayout) view.findViewById(R.id.alarmSettingsClickable);
         Button arrow = (Button) view.findViewById(R.id.alarmMore);
 
         int finalRadius = (int)Math.hypot(cardView.getWidth()/2, cardView.getHeight()/2);
@@ -85,7 +87,8 @@ public final class ClickButton extends MainActivity {
         cardView.setBackgroundColor(view.getResources().getColor(R.color.colorCardSelected));
         layoutOld.setVisibility(View.GONE);
         layoutNew.setVisibility(View.VISIBLE);
-        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_arrow_up));
+        settingsButton.setVisibility(View.GONE);
+        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_arrow_down));
         animator.start();
     }
 
@@ -94,7 +97,7 @@ public final class ClickButton extends MainActivity {
         FrameLayout layoutOld = (FrameLayout) view.findViewById(R.id.cardAlarmLayoutDefault);
         LinearLayout layoutNew = (LinearLayout) view.findViewById(R.id.cardAlarmLayoutSettings);
         Button arrow = (Button) view.findViewById(R.id.alarmMore);
-
+        RelativeLayout settingsButton = (RelativeLayout) view.findViewById(R.id.alarmSettingsClickable);
         int finalRadius = (int)Math.hypot(cardView.getWidth()/2, cardView.getHeight()/2);
 
         Animator animator = ViewAnimationUtils.createCircularReveal(
@@ -106,7 +109,8 @@ public final class ClickButton extends MainActivity {
         cardView.setBackgroundColor(view.getResources().getColor(R.color.colorBackgroundDefault));
         layoutOld.setVisibility(View.VISIBLE);
         layoutNew.setVisibility(View.GONE);
-        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_arrow_down));
+        settingsButton.setVisibility(View.VISIBLE);
+        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_info));
         animator.start();
     }
 

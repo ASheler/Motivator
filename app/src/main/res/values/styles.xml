@@ -6,12 +6,34 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
+
+
+
     <style name="CardOnOffText" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textSize">25sp</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingStart">16dp</item>
 
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.AppTheme.Light" parent="android:Theme.Material.Light" />
+
+    <style name="MaterialThemeApp" parent="android:Theme.Material.Light" >
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
 </resources>
