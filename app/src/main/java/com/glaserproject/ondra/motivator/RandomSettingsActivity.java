@@ -11,7 +11,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 public class RandomSettingsActivity extends AppCompatActivity {
-    boolean mainSwitchState;
 
     Settings settings = new Settings();
     TextView set3h;
@@ -20,27 +19,12 @@ public class RandomSettingsActivity extends AppCompatActivity {
     TextView set8h;
     TextView set12h;
 
-    SharedPreferences sharedPreferences;
+    SharedPreferences settingsPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_random_settings);
-        Intent intent = getIntent();
-        mainSwitchState = intent.getBooleanExtra("SwitchState", false);
-        Switch mainSwitch = (Switch) findViewById(R.id.alarmSwitch);
-        if (mainSwitchState){
-            mainSwitch.setChecked(true);
-        }
-
-        sharedPreferences = getSharedPreferences("RandomSettings", Context.MODE_PRIVATE);
-
-        mainSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                settings.randomSwitch = isChecked;
-            }
-        });
 
         set3h = (TextView) findViewById(R.id.every3h);
         set4h = (TextView) findViewById(R.id.every4h);
@@ -48,7 +32,26 @@ public class RandomSettingsActivity extends AppCompatActivity {
         set8h = (TextView) findViewById(R.id.every8h);
         set12h = (TextView) findViewById(R.id.every12h);
 
-        changeTime(sharedPreferences.getInt("ClickedId", 1));
+        Switch mainSwitch = (Switch) findViewById(R.id.alarmSwitch);
+
+
+        settingsPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor settingsEditor = settingsPreferences.edit();
+        settings.loadFromSaved(getApplicationContext());
+
+        mainSwitch.setChecked(settings.randomSwitch);
+        changeTime(settings.randomInt);
+        mainSwitch.setChecked(settings.randomSwitch);
+
+
+        mainSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                settingsEditor.putBoolean("RandomSwitch", isChecked);
+                settingsEditor.commit();
+            }
+        });
+
 
         set3h.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,55 +87,64 @@ public class RandomSettingsActivity extends AppCompatActivity {
     }
 
     public void changeTime (int clickId){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("ClickedId", clickId);
-        editor.commit();
+
+        settingsPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor settingsEditor = settingsPreferences.edit();
+        settingsEditor.putInt("RandomInt", clickId);
+
         switch (clickId){
             case 0:
                 break;
             case 1:                 //3h
                 resetBgColorAll();
                 set3h.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                settings.randomLow = 7200000;
-                settings.randomHigh = 14400000;
+                settingsEditor.putLong("RandomLow", 7200000);
+                settingsEditor.putLong("RandomHigh", 14400000);
 
                 break;
             case 2:                 //4h
                 resetBgColorAll();
                 set4h.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                settings.randomLow = 10800000;
-                settings.randomHigh = 18000000;
-
+                settingsEditor.putLong("RandomLow", 10800000);
+                settingsEditor.putLong("RandomHigh", 18000000);
                 break;
             case 3:                 //5h
                 resetBgColorAll();
                 set5h.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                settings.randomLow = 14400000;
-                settings.randomHigh = 21600000;
+                settingsEditor.putLong("RandomLow", 14400000);
+                settingsEditor.putLong("RandomHigh", 21600000);
                 break;
             case 4:                 //8h
                 resetBgColorAll();
                 set8h.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                settings.randomLow = 25200000;
-                settings.randomHigh = 32400000;
+                settingsEditor.putLong("RandomLow", 25200000);
+                settingsEditor.putLong("RandomHigh", 32400000);
                 break;
             case 5:                 //12h
                 resetBgColorAll();
                 set12h.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-                settings.randomLow = 39600000;
-                settings.randomHigh = 46800000;
+                settingsEditor.putLong("RandomLow", 39600000);
+                settingsEditor.putLong("RandomHigh", 46800000);
                 break;
         }
-
+        settingsEditor.commit();
     }
 
     public void resetBgColorAll(){
-        set3h.setBackgroundColor(getResources().getColor(R.color.colorCardSelected));
-        set4h.setBackgroundColor(getResources().getColor(R.color.colorCardSelected));
-        set5h.setBackgroundColor(getResources().getColor(R.color.colorCardSelected));
-        set8h.setBackgroundColor(getResources().getColor(R.color.colorCardSelected));
-        set12h.setBackgroundColor(getResources().getColor(R.color.colorCardSelected));
+        set3h.setBackgroundColor(getResources().getColor(R.color.colorSettingsDefault));
+        set4h.setBackgroundColor(getResources().getColor(R.color.colorSettingsDefault));
+        set5h.setBackgroundColor(getResources().getColor(R.color.colorSettingsDefault));
+        set8h.setBackgroundColor(getResources().getColor(R.color.colorSettingsDefault));
+        set12h.setBackgroundColor(getResources().getColor(R.color.colorSettingsDefault));
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        settingsPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor settingsEditor = settingsPreferences.edit();
+        settingsEditor.putBoolean("showAnim", false);
+        settingsEditor.commit();
+    }
 }

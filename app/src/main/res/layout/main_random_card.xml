@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Send notification at random time"
+            android:text="@string/cardRandomText"
             android:gravity="center"
             android:paddingStart="16dp"
             android:textSize="15sp"
@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="You will receive notification in random intevals every 3 to 5 hours"
+            android:text="@string/cardRandomMoreText"
             android:gravity="center"
             android:layout_marginBottom="10dp"
             />
@@ -75,7 +75,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="settings"
+                android:text="@string/settings"
                 android:layout_alignTop="@+id/randomSettings"
                 android:layout_toStartOf="@+id/randomSettings" />
             <FrameLayout

@@ -41,11 +41,11 @@ public class ShowNotif extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         mBuilder
                 .setSmallIcon(R.drawable.ic_stat_notif)
-                .setContentTitle("Motivator")
-                .setContentText("You received a new quote")
+                .setContentTitle(context.getString(R.string.notificationTitle))
+                .setContentText(context.getString(R.string.notificationText))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_HIGH)
-                .setStyle(new NotificationCompat.BigTextStyle(mBuilder).bigText(quote).setBigContentTitle("Motivator").setSummaryText("Get motivated!"))
+                .setStyle(new NotificationCompat.BigTextStyle(mBuilder).bigText(quote).setBigContentTitle(context.getString(R.string.notificationTitle)).setSummaryText(context.getString(R.string.NotificationSummary)))
         ;
         mBuilder.setAutoCancel(true);
         mBuilder.setContentIntent(resultPendingIntent);
@@ -61,6 +61,7 @@ public class ShowNotif extends BroadcastReceiver {
         if (sendRandom){
             Random generator = new Random();
             Settings settings = new Settings();
+            settings.loadFromSaved(context);
             long LOW = settings.randomLow;
             long HIGH = settings.randomHigh;
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Motivátor</string>
+    <string name="random"><i>Will fire every 3 - 5 hours</i></string>
+    <string name="title_activity_image_settings">ImageSettingsActivity</string>
+    <string name="notificationTitle">Motivátor</string>
+    <string name="notificationText">Přišla nová motivační hláška!</string>
+    <string name="notificationTextImage">Přišel nový motivační obrázek!</string>
+    <string name="timeAfterAlarmLongText">Interval, kdy po budíku přijde notifikace:</string>
+    <string name="loadingText">Načítám…</string>
+    <string name="notifRandomText">Získat notifikaci v náhodném čase</string>
+    <string name="intervalRandomText">Interval mezi náhodnými notifikacemi:</string>
+    <string name="intervalRangeText">Náhodný rozptyl je vždy +-1 hodina</string>
+    <string name="opText">Autor:</string>
+    <string name="cardAlarmTriggerText">Získat notifikaci po budíku</string>
+    <string name="cardAlarmMoreText">Notifikace s motivací přijde v nastaveném čase po zazvonění budíku</string>
+    <string name="cardPictureMoreText">Notifikace přijde s nejlepším motivačním obrázkem z /r/GetMotivated za posledních 24h</string>
+    <string name="picture">Obrázek</string>
+    <string name="text">Text</string>
+    <string name="cardRandomMoreText">Notifikace přijde v náhodném čase dle nastavení</string>
+    <string name="afterAlarmText">Získat notifikaci po budíku</string>
+    <string name="get_notificationsText">Zasílat notifikace</string>
+    <string name="cardRandomText">Získat notifikaci v náhodném čase</string>
+    <string name="settings">Nastavení</string>
+    <string name="pictureTextSettings">Získávat obrázek z posledních:</string>
+    <string name="noImagesFound">Nenalezeny žádné relevantní obrázky</string>
+</resources>

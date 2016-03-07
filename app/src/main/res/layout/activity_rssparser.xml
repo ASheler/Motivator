@@ -32,6 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:indeterminate="true" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -43,7 +44,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Original Poster:"
+                    android:id="@+id/opText"
+                    android:text="@string/opText"
                     android:textSize="15sp" />
 
                 <TextView
@@ -53,7 +55,6 @@
                     android:id="@+id/userName"
                     android:textSize="15sp" />
             </LinearLayout>
-
             <WebView
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
@@ -62,6 +63,16 @@
                 android:layout_marginTop="16dp">
 
             </WebView>
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:padding="20dp"
+                android:layout_marginTop="50dp"
+            android:id="@+id/errorText"
+            android:text="Click here to load the subreddit..."
+            />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

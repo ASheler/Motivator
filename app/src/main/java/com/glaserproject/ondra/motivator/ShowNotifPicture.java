@@ -37,8 +37,8 @@ public class ShowNotifPicture extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context);
         mBuilder
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Motivator")
-                .setContentText("You received a motivational picture!")
+                .setContentTitle(context.getString(R.string.notificationTitle))
+                .setContentText(context.getString(R.string.notificationTextImage))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_HIGH)
         ;
@@ -56,6 +56,7 @@ public class ShowNotifPicture extends BroadcastReceiver {
         if (sendRandom){
             Random generator = new Random();
             Settings settings = new Settings();
+            settings.loadFromSaved(context);
             long LOW = settings.randomLow;
             long HIGH = settings.randomHigh;
 

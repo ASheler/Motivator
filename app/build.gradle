@@ -7,8 +7,8 @@ android {
         applicationId "com.glaserproject.ondra.motivator"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 3
-        versionName '0.7'
+        versionCode 8
+        versionName '1.0'
     }
     buildTypes {
         release {

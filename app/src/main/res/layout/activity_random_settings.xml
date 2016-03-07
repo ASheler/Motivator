@@ -15,14 +15,16 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
             android:id="@+id/cardAlarmLayoutDefault">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Send notification at random time"
+                android:text="@string/notifRandomText"
                 android:gravity="center"
                 android:paddingStart="16dp"
                 android:textSize="15sp"
+                android:textColor="@android:color/white"
                 android:transitionName="RandomText"
                 />
 
@@ -47,14 +49,14 @@
         android:textSize="18sp"
         android:layout_below="@id/cardRandom"
         android:gravity="center"
-        android:text="Interval between random notifications:"
+        android:text="@string/intervalRandomText"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/intervalLayout"
         android:gravity="center"
-        android:background="@color/colorCardSelected"
+        android:background="@color/colorSettingsDefault"
         android:layout_below="@id/intervalText"
         android:layout_alignParentStart="true"
         android:elevation="4dp"
@@ -120,7 +122,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Random range is always +-1 hour"
+        android:text="@string/intervalRangeText"
         android:gravity="center"
         android:layout_below="@+id/intervalLayout"
         android:paddingTop="15dp"

@@ -21,7 +21,6 @@ import android.widget.RelativeLayout;
  */
 public final class ClickButton extends MainActivity {
     public ClickButton(){
-
     }
 
     public static void pictureButtonSettings(View view){
@@ -29,6 +28,7 @@ public final class ClickButton extends MainActivity {
         View cardView = view.findViewById(R.id.cardPicture);
         LinearLayout layoutOld = (LinearLayout) view.findViewById(R.id.cardPictureLayoutDefault);
         LinearLayout layoutNew = (LinearLayout) view.findViewById(R.id.cardPictureLayoutSettings);
+        RelativeLayout settingsButton = (RelativeLayout) view.findViewById(R.id.pictureSettingsClickable);
         Button arrow = (Button) view.findViewById(R.id.pictureMore);
 
 
@@ -43,6 +43,7 @@ public final class ClickButton extends MainActivity {
         cardView.setBackgroundColor(view.getResources().getColor(R.color.colorCardSelected));
         layoutOld.setVisibility(View.GONE);
         layoutNew.setVisibility(View.VISIBLE);
+        settingsButton.setVisibility(View.GONE);
         arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_arrow_up));
         animator.start();
     }
@@ -51,6 +52,7 @@ public final class ClickButton extends MainActivity {
         View cardView = view.findViewById(R.id.cardPicture);
         LinearLayout layoutOld = (LinearLayout) view.findViewById(R.id.cardPictureLayoutDefault);
         LinearLayout layoutNew = (LinearLayout) view.findViewById(R.id.cardPictureLayoutSettings);
+        RelativeLayout settingsButton = (RelativeLayout) view.findViewById(R.id.pictureSettingsClickable);
         Button arrow = (Button) view.findViewById(R.id.pictureMore);
 
         int finalRadius = (int)Math.hypot(cardView.getWidth()/2, cardView.getHeight()/2);
@@ -64,7 +66,8 @@ public final class ClickButton extends MainActivity {
         cardView.setBackgroundColor(view.getResources().getColor(R.color.colorBackgroundDefault));
         layoutOld.setVisibility(View.VISIBLE);
         layoutNew.setVisibility(View.GONE);
-        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_arrow_down));
+        settingsButton.setVisibility(View.VISIBLE);
+        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_info));
         animator.start();
     }
 
@@ -88,7 +91,7 @@ public final class ClickButton extends MainActivity {
         layoutOld.setVisibility(View.GONE);
         layoutNew.setVisibility(View.VISIBLE);
         settingsButton.setVisibility(View.GONE);
-        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_arrow_down));
+        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_arrow_up));
         animator.start();
     }
 
@@ -118,6 +121,7 @@ public final class ClickButton extends MainActivity {
         View cardView = view.findViewById(R.id.cardRandom);
         FrameLayout layoutOld = (FrameLayout) view.findViewById(R.id.cardRandomLayoutDefault);
         LinearLayout layoutNew = (LinearLayout) view.findViewById(R.id.cardRandomLayoutSettings);
+        RelativeLayout settingsButton = (RelativeLayout) view.findViewById(R.id.randomSettingsClickable);
         Button arrow = (Button) view.findViewById(R.id.randomMore);
 
         int finalRadius = (int)Math.hypot(cardView.getWidth()/2, cardView.getHeight()/2);
@@ -131,6 +135,7 @@ public final class ClickButton extends MainActivity {
         cardView.setBackgroundColor(view.getResources().getColor(R.color.colorCardSelected));
         layoutOld.setVisibility(View.GONE);
         layoutNew.setVisibility(View.VISIBLE);
+        settingsButton.setVisibility(View.GONE);
         arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_arrow_up));
         animator.start();
     }
@@ -139,6 +144,7 @@ public final class ClickButton extends MainActivity {
         View cardView = view.findViewById(R.id.cardRandom);
         FrameLayout layoutOld = (FrameLayout) view.findViewById(R.id.cardRandomLayoutDefault);
         LinearLayout layoutNew = (LinearLayout) view.findViewById(R.id.cardRandomLayoutSettings);
+        RelativeLayout settingsButton = (RelativeLayout) view.findViewById(R.id.randomSettingsClickable);
         Button arrow = (Button) view.findViewById(R.id.randomMore);
 
         int finalRadius = (int)Math.hypot(cardView.getWidth()/2, cardView.getHeight()/2);
@@ -152,7 +158,8 @@ public final class ClickButton extends MainActivity {
         cardView.setBackgroundColor(view.getResources().getColor(R.color.colorBackgroundDefault));
         layoutOld.setVisibility(View.VISIBLE);
         layoutNew.setVisibility(View.GONE);
-        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_arrow_down));
+        settingsButton.setVisibility(View.VISIBLE);
+        arrow.setBackground(view.getResources().getDrawable(R.drawable.ic_info));
         animator.start();
 
     }

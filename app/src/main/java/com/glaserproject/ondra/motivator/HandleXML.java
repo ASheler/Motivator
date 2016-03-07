@@ -70,7 +70,7 @@ public class HandleXML {
 
 
                             description = text2;
-                            if (text2.contains("jpg") || text2.contains("png")){
+                            if (text2.contains("imgur")){
                                 event = XmlPullParser.END_DOCUMENT;
                                 break;
                             }

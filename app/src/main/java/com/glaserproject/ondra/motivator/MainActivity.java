@@ -9,17 +9,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.PersistableBundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.util.Pair;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Fade;
 import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -38,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
     Switch pictureSwitch;
     Switch randomSwitch;
 
+
+    boolean animEnter;
+
+
+
     static boolean mainSwitchState, alarmSwitchState, pictureSwitchState, randomSwitchState;
 
     FloatingActionButton fab;
@@ -50,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private PendingIntent pendingIntent;
     private AlarmManager manager;
 
-    SharedPreferences sharedPreferences;
+    SharedPreferences settingsPreferences;
 
     RelativeLayout alarmSettingsButton;
     RelativeLayout pictureSettingsButton;
@@ -58,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout alarmMoreLayout;
     FrameLayout pictureMoreLayout;
     FrameLayout randomMoreLayout;
+    Button pictureMore;
+    Button alarmMore;
+    Button randomMore;
 
     LinearLayout cardPictureLayoutSettings;
     LinearLayout cardAlarmLayoutSettings;
@@ -96,46 +113,18 @@ public class MainActivity extends AppCompatActivity {
         pictureMoreLayout = (FrameLayout) findViewById(R.id.pictureMoreLayout);
         randomMoreLayout = (FrameLayout) findViewById(R.id.randomMoreLayout);
 
+        alarmMore = (Button) findViewById(R.id.alarmMore);
+        pictureMore = (Button) findViewById(R.id.pictureMore);
+        randomMore = (Button) findViewById(R.id.randomMore);
 
-        if (savedInstanceState != null) {
-            if (savedInstanceState.getBoolean("MAINstate")) {
-                mainSwitch.setChecked(true);
-                mainSwitchState = true;
-            }
-            if (savedInstanceState.getBoolean("ALARMstate")) {
-                alarmSwitch.setChecked(true);
-                alarmSwitchState = true;
-            }
-            if (savedInstanceState.getBoolean("PICTUREstate")) {
-                pictureSwitch.setChecked(true);
-                pictureSwitchState = true;
-            }
-            if (savedInstanceState.getBoolean("RANDOMstate")) {
-                randomSwitch.setChecked(true);
-                randomSwitchState = true;
-            }
-        }
-
-        sharedPreferences = getSharedPreferences("SwitchStates", Context.MODE_PRIVATE);
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        if (sharedPreferences.getBoolean("MAINstate", false)) {
-            mainSwitch.setChecked(true);
-            mainSwitchState = true;
-        }
-        if (sharedPreferences.getBoolean("ALARMstate", false)) {
-            alarmSwitch.setChecked(true);
-            alarmSwitchState = true;
-        }
-        if (sharedPreferences.getBoolean("PICTUREstate", false)) {
-            pictureSwitch.setChecked(true);
-            pictureSwitchState = true;
-        }
-        if (sharedPreferences.getBoolean("RANDOMstate", false)) {
-            randomSwitch.setChecked(true);
-            randomSwitchState = true;
-        }
-
+        //load data
+        settingsPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor settingsEditor = settingsPreferences.edit();
+        //settings.loadFromSaved(getApplicationContext());
+        buildUI();
+//
+//        sharedPreferences = getSharedPreferences("SwitchStates", Context.MODE_PRIVATE);
+//        final SharedPreferences.Editor editor = sharedPreferences.edit();
 
         mainSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -147,8 +136,9 @@ public class MainActivity extends AppCompatActivity {
                     turnOffMain();
                 }
                 triggerChange();
-                editor.putBoolean("MAINstate", isChecked);
-                editor.commit();
+                settingsEditor.putBoolean("MainSwitch", isChecked);
+                settingsEditor.commit();
+
             }
         });
         alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -156,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 alarmSwitchState = isChecked;
                 triggerChange();
-
                 if (mainSwitchState) {
                     if (isChecked) {
                         showNotifOnAlarm();
@@ -164,15 +153,15 @@ public class MainActivity extends AppCompatActivity {
                         cancelAlarmNotif();
                     }
                 }
-                editor.putBoolean("ALARMstate", isChecked);
-                editor.commit();
+                settingsEditor.putBoolean("AlarmSwitch", isChecked);
+                settingsEditor.commit();
             }
         });
 
         pictureSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                pictureSwitchState = isChecked;
+                settings.pictureSwitch = isChecked;
                 if (isChecked) {
 
                     if (mainSwitchState) {
@@ -181,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }
-                editor.putBoolean("PICTUREstate", isChecked);
-                editor.commit();
+                settingsEditor.putBoolean("PictureSwitch", isChecked);
+                settingsEditor.commit();
             }
         });
 
@@ -198,17 +187,17 @@ public class MainActivity extends AppCompatActivity {
                         cancelRndNotif();
                     }
                 }
-                editor.putBoolean("RANDOMstate", isChecked);
-                editor.commit();
+                settingsEditor.putBoolean("RandomSwitch", isChecked);
+                settingsEditor.commit();
             }
         });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pictureSwitchState){
+                if (settings.pictureSwitch){
                     showNotifNowPicture();
-                }else {
+                } else {
                     showNotifNow();
                 }
             }
@@ -218,7 +207,20 @@ public class MainActivity extends AppCompatActivity {
         pictureMoreLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View cardView = (View) findViewById(R.id.sceneRoot);
+                View cardView = (View) findViewById(R.id.cardPicture);
+                if (!pictureCardClicked){
+                    ClickButton.pictureButtonSettings(cardView);
+                    pictureCardClicked = true;
+                } else{
+                    ClickButton.pictureButtonDefault(cardView);
+                    pictureCardClicked = false;
+                }
+            }
+        });
+        pictureMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View cardView = (View) findViewById(R.id.cardPicture);
                 if (!pictureCardClicked){
                     ClickButton.pictureButtonSettings(cardView);
                     pictureCardClicked = true;
@@ -242,6 +244,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        alarmMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View cardView = (View) findViewById(R.id.cardAlarm);
+                if (!alarmCardClicked){
+                    ClickButton.alarmButtonSettings(cardView);
+                    alarmCardClicked = true;
+                } else{
+                    ClickButton.alarmButtonDefault(cardView);
+                    alarmCardClicked = false;
+                }
+            }
+        });
+
         randomMoreLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,6 +271,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        randomMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View cardView = (View) findViewById(R.id.cardRandom);
+                if (!randomCardClicked){
+                    ClickButton.randomButtonSettings(cardView);
+                    randomCardClicked = true;
+                } else{
+                    ClickButton.randomButtonDefault(cardView);
+                    randomCardClicked = false;
+                }
+            }
+        });
+
         alarmSettingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -275,16 +305,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
     }
+
+
+    public void buildUI(){
+        settings.loadFromSaved(getApplicationContext());
+        mainSwitch.setChecked(settings.mainSwitch);
+        alarmSwitch.setChecked(settings.alarmSwitch);
+        pictureSwitch.setChecked(settings.pictureSwitch);
+        randomSwitch.setChecked(settings.randomSwitch);
+    }
+
+
+
+
+
+
 
     public void AlarmSettings(View v){
         Intent intent = new Intent(this, AlarmSettingsActivity.class);
-        intent.putExtra("SwitchState", alarmSwitchState);
         Pair<View, String> pair1 = Pair.create(v.findViewById(R.id.alarmSwitch), "AlarmSwitch");
         Pair<View, String> pair2 = Pair.create(v.findViewById(R.id.alarmText), "AlarmText");
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1, pair2);
@@ -293,7 +332,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void RandomSettings(View v){
         Intent intent = new Intent(this, RandomSettingsActivity.class);
-        intent.putExtra("SwitchState", randomSwitchState);
         Pair<View, String> pair1 = Pair.create(v.findViewById(R.id.randomSwitch), "RandomSwitch");
         Pair<View, String> pair2 = Pair.create(v.findViewById(R.id.randomText), "RandomText");
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1, pair2);
@@ -301,7 +339,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void PictureSettings(View v){
-        Toast.makeText(MainActivity.this, "Sorry, not awailable for now.", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, PictureSettingsActivity.class);
+        Pair<View, String> pair1 = Pair.create(v.findViewById(R.id.pictureSwitch), "PictureSwitch");
+        Pair<View, String> pair2 = Pair.create(v.findViewById(R.id.pictureText), "PictureText");
+        Pair<View, String> pair3 = Pair.create(v.findViewById(R.id.pictureText2), "PictureText2");
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, pair1, pair2, pair3);
+        startActivity(intent, options.toBundle());
     }
 
 
@@ -325,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
             alarmIntentNow.putExtra("PICTURE", pictureSwitchState);
             pendingIntentNew = pendingIntent.getBroadcast(this, pendingIntentAlarm, alarmIntentNow, 0);
             manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-            manager.set(AlarmManager.RTC_WAKEUP, alarmTime+settings.afterAlarmTime, pendingIntentNew); //15 secs after alarm
+            manager.set(AlarmManager.RTC_WAKEUP, alarmTime+settings.afterAlarmTime, pendingIntentNew);
         }
 
     }
@@ -339,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void showNotifRnd(){
         Random generator = new Random();
-                            //10800000 = 3h, 21600000 = 6h
+
         long LOW = settings.randomLow;
         long HIGH = settings.randomHigh;
 
@@ -405,11 +449,11 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         mBuilder
                 .setSmallIcon(R.drawable.ic_stat_notif)
-                .setContentTitle("Motivator")
-                .setContentText("You received a new quote")
+                .setContentTitle(getString(R.string.notificationTitle))
+                .setContentText(getString(R.string.notificationText))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_HIGH)
-                .setStyle(new NotificationCompat.BigTextStyle(mBuilder).bigText(quote).setBigContentTitle("Motivator").setSummaryText("Get motivated!"))
+                .setStyle(new NotificationCompat.BigTextStyle(mBuilder).bigText(quote).setBigContentTitle(getString(R.string.notificationTitle)).setSummaryText(getString(R.string.NotificationSummary)))
         ;
         mBuilder.setAutoCancel(true);
         mBuilder.setContentIntent(resultPendingIntent);
@@ -439,8 +483,8 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         mBuilder
                 .setSmallIcon(R.drawable.ic_stat_notif)
-                .setContentTitle("Motivator")
-                .setContentText("You received a motivational picture!")
+                .setContentTitle(getString(R.string.notificationTitle))
+                .setContentText(getString(R.string.notificationTextImage))
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(Notification.PRIORITY_HIGH)
                 ;
@@ -491,25 +535,51 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        outState.putBoolean("MAINstate", mainSwitchState);
-        outState.putBoolean("ALARMstate", alarmSwitchState);
-        outState.putBoolean("PICTUREstate", pictureSwitchState);
-        outState.putBoolean("RANDOMstate", randomSwitchState);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (settings.alarmSwitch){
-            alarmSwitch.setChecked(true);
+        buildUI();
+    }
 
-        } else {
-            alarmSwitch.setChecked(false);
+    @Override
+    public void onEnterAnimationComplete() {
+        super.onEnterAnimationComplete();
+        settingsPreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+
+        animEnter = settingsPreferences.getBoolean("showAnim", true);
+
+        if (animEnter) {
+
+            ViewGroup root = (ViewGroup) findViewById(R.id.scrollView);
+            int count = root.getChildCount();
+            float offset = getResources().getDimensionPixelSize(R.dimen.offset_y);
+            Interpolator interpolator =
+                    AnimationUtils.loadInterpolator(this, android.R.interpolator.linear_out_slow_in);
+
+            // loop over the children setting an increasing translation y but the same animation
+            // duration + interpolation
+            for (int i = 0; i < count; i++) {
+                View view = root.getChildAt(i);
+                view.setVisibility(View.VISIBLE);
+                view.setTranslationY(offset);
+                view.setAlpha(0.85f);
+                // then animate back to natural position
+                view.animate()
+                        .translationY(0f)
+                        .alpha(1f)
+                        .setInterpolator(interpolator)
+                        .setDuration(1000L)
+                        .start();
+                // increase the offset distance for the next view
+                offset *= 1.5f;
+            }
+
         }
-        if (settings.randomSwitch){
-            randomSwitch.setChecked(true);
-        } else {
-            randomSwitch.setChecked(false);
-        }
+        final SharedPreferences.Editor settingsEditor = settingsPreferences.edit();
+        settingsEditor.putBoolean("showAnim", true);
+        settingsEditor.commit();
+
     }
 }

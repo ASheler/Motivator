@@ -2,4 +2,26 @@
     <string name="app_name">Motivator</string>
     <string name="random"><i>Will fire every 3 - 5 hours</i></string>
     <string name="title_activity_image_settings">ImageSettingsActivity</string>
+    <string name="notificationTitle">Motivator</string>
+    <string name="notificationText">You received a new quote!</string>
+    <string name="NotificationSummary" translatable="false">Get motivated!</string>
+    <string name="notificationTextImage">You received a motivational picture!</string>
+    <string name="afterAlarmText">Send notification after Alarm</string>
+    <string name="timeAfterAlarmLongText">Time after alarm, when to get notification:</string>
+    <string name="get_notificationsText">Get notifications</string>
+    <string name="loadingText">Loading…</string>
+    <string name="notifRandomText">Send notification at random time</string>
+    <string name="intervalRandomText">Interval between random notifications:</string>
+    <string name="intervalRangeText">Random range is always +-1 hour</string>
+    <string name="opText">Original Poster:</string>
+    <string name="cardAlarmTriggerText">Send notification after Alarm</string>
+    <string name="cardAlarmMoreText">You will receive notification with your motivation quote in set time after your alarm rings</string>
+    <string name="settings">Settings</string>
+    <string name="cardPictureMoreText">You will receive top motivational picture from /r/GetMotivated in last 24h</string>
+    <string name="picture">Picture</string>
+    <string name="text">Text</string>
+    <string name="cardRandomMoreText">You will receive notification in random intevals according to your settings</string>
+    <string name="cardRandomText">Send notification at random time</string>
+    <string name="pictureTextSettings">Get best picture from last:</string>
+    <string name="noImagesFound">No relevant images found</string>
 </resources>

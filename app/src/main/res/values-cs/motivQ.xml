@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="quotes">
-        <item>You are the best!</item>
+    <string-array name="quotes"><item>You are the best!</item>
         <item>Good, better, best. Never let it rest. \'Til your good is better and your better is best. \n(St. Jerome)</item>
         <item>Either you run the day or the day runs you. \n(John Rohn)</item>
         <item>Accept the challenges so that you can feel the exhilaration of victory. \n(George S. Patton)</item>

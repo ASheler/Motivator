@@ -14,10 +14,12 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Text"
+            android:text="@string/text"
             android:gravity="center"
             android:textSize="15sp"
             android:layout_gravity="center"
+            android:transitionName="PictureText"
+            android:id="@+id/pictureText"
             />
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -28,15 +30,18 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:id="@+id/pictureSwitch"
+                android:transitionName="PictureSwitch"
                 />
         </RelativeLayout>
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Picture"
+            android:text="@string/picture"
             android:gravity="center"
             android:textSize="15sp"
+            android:transitionName="PictureText2"
+            android:id="@+id/pictureText2"
             />
     </LinearLayout>
     <LinearLayout
@@ -48,7 +53,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="17sp"
-            android:text="You will receive top motivational picture from /r/GetMotivated in last 24h"
+            android:text="@string/cardPictureMoreText"
             />
     </LinearLayout>
     <LinearLayout
@@ -86,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="settings"
+                android:text="@string/settings"
                 android:layout_alignTop="@+id/pictureSettings"
                 android:layout_toStartOf="@+id/pictureSettings" />
             <FrameLayout

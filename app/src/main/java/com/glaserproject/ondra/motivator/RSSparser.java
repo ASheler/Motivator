@@ -1,5 +1,6 @@
 package com.glaserproject.ondra.motivator;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -18,9 +19,15 @@ import android.widget.Toast;
 public class RSSparser extends AppCompatActivity {
 
     TextView link;
-    private String finalUrl="https://www.reddit.com/r/GetMotivated/search.rss?q=flair%3AImage&sort=top&restrict_sr=on&t=day";
+    TextView errorMessage;
+    TextView opText;
+
+    boolean error;
+
+    private String finalUrl;
     private HandleXML obj;
     String www;
+    Settings settings = new Settings();
 
 
     @Override
@@ -29,22 +36,40 @@ public class RSSparser extends AppCompatActivity {
         setContentView(R.layout.activity_rssparser);
         findViewById(R.id.webView).setVisibility(View.GONE);
         findViewById(R.id.loadingBar).setVisibility(View.VISIBLE);
+        errorMessage = (TextView) findViewById(R.id.errorText);
+        //errorMessage.setVisibility(View.VISIBLE);
+
+
+        settings.loadFromSaved(getApplicationContext());
 
         new loadImage().execute();
 
-        final GestureDetector gestureDetector = new GestureDetector(this, new SingleTapConfirm());
 
+
+
+        final GestureDetector gestureDetector = new GestureDetector(this, new SingleTapConfirm());
 
         WebView img = (WebView) findViewById(R.id.webView);
         img.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (gestureDetector.onTouchEvent(event)){
+                if (gestureDetector.onTouchEvent(event)) {
                     return true;
                 }
                 return false;
             }
         });
+
+
+        errorMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://www.reddit.com/r/GetMotivated"));
+                startActivity(intent);
+            }
+        });
+
 
 
 
@@ -65,6 +90,7 @@ public class RSSparser extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             findViewById(R.id.loadingBar).setVisibility(View.VISIBLE);
+            findViewById(R.id.errorText).setVisibility(View.GONE);
         }
 
         @Override
@@ -81,6 +107,7 @@ public class RSSparser extends AppCompatActivity {
     }
 
     public void parseImg(){
+        finalUrl = settings.pictureUrl;
         obj = new HandleXML(finalUrl);
         obj.fetchXML();
         while(obj.parsingComplete);
@@ -90,16 +117,28 @@ public class RSSparser extends AppCompatActivity {
             @Override
             public void run() {
                 link = (TextView) findViewById(R.id.userName);
-                link.setText(obj.getLink());
+                opText = (TextView) findViewById(R.id.opText);
+                if (obj.getLink().equals("link")){
+                    link.setText(R.string.noImagesFound);
+                    error = true;
+                    findViewById(R.id.errorText).setVisibility(View.VISIBLE);
+                    opText.setText("Error: ");
 
-                WebView img = (WebView) findViewById(R.id.webView);
-                img.setVisibility(View.VISIBLE);
+                } else {
+                    error = false;
+                    findViewById(R.id.errorText).setVisibility(View.GONE);
+                    link.setText(obj.getLink());
+                    WebView img = (WebView) findViewById(R.id.webView);
+
+
+
 //                img.loadUrl(obj.getDescription());
-                //img.loadUrl("http://i.imgur.com/7dOyhlx.png");
-                img.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-                String summary = "<html><body><img src=\"" + obj.getDescription() + "\" width=\"100%\"></body></html>";
-                img.loadData(summary, "text/html", null);
-                //img.loadDataWithBaseURL(null, "<style>img{display:inline; height:auto; max-width=100%;}</style>" + obj.getDescription(), "text/html", "UTF-8", null);
+                    //img.loadUrl("http://i.imgur.com/7dOyhlx.png");
+                    img.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+                    String summary = "<html><body><img src=\"" + obj.getDescription() + "\" width=\"100%\"></body></html>";
+                    img.loadData(summary, "text/html", null);
+                    //img.loadDataWithBaseURL(null, "<style>img{display:inline; height:auto; max-width=100%;}</style>" + obj.getDescription(), "text/html", "UTF-8", null);
+                }
             }
         });
         www = obj.getDescription();

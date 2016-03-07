@@ -13,13 +13,20 @@ public class AlarmCheck extends BroadcastReceiver {
         AlarmManager manager;
         Settings settings;
         settings = new Settings();
+        settings.loadFromSaved(context);
         AlarmManager.AlarmClockInfo info =
                 ((AlarmManager)context.getSystemService(Context.ALARM_SERVICE)).getNextAlarmClock();
         if (info != null) {
             long alarmTime = info.getTriggerTime();
             PendingIntent pendingIntent = null;
             //set up alarm and waiting intent
-            Intent alarmIntent = new Intent(context.getApplicationContext(), ShowNotif.class);
+            Intent alarmIntent;
+
+            if (settings.pictureSwitch) {
+                alarmIntent = new Intent(context.getApplicationContext(), ShowNotifPicture.class);
+            } else {
+                alarmIntent = new Intent(context.getApplicationContext(), ShowNotif.class);
+            }
             pendingIntent = pendingIntent.getBroadcast(context.getApplicationContext(), 0, alarmIntent, 0);
 
             manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);

@@ -14,11 +14,12 @@
         app:cardElevation="15dp"
         >
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="loading..."
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/loadingText"
             android:gravity="center"
             android:layout_gravity="center"
+            android:padding="16dp"
             android:textSize="25sp"
             android:id="@+id/quoteText"
             />

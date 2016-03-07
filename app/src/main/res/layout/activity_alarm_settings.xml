@@ -18,14 +18,16 @@
         >
         <FrameLayout
             android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
             android:layout_height="match_parent"
             android:layout_above="@+id/alarmSettingsTab"
             android:id="@+id/cardAlarmLayoutDefault">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Send notification after Alarm"
+                android:text="@string/afterAlarmText"
                 android:gravity="center"
+                android:textColor="@android:color/white"
                 android:paddingStart="16dp"
                 android:textSize="15sp"
                 android:transitionName="AlarmText"
@@ -52,13 +54,13 @@
         android:textSize="18sp"
         android:layout_below="@id/cardAlarm"
         android:gravity="center"
-        android:text="Time after alarm, when to get notification:"
+        android:text="@string/timeAfterAlarmLongText"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="@color/colorCardSelected"
+        android:background="@color/colorSettingsDefault"
         android:layout_below="@id/timeText"
         android:layout_alignParentStart="true"
         android:elevation="4dp"
